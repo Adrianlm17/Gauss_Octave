@@ -10,7 +10,7 @@ Different scripts to solve various problems by applying the Gauss method
 1. [Gauss Method](#gauss-method)
 3. [Simple Gauss method](#simple-gauss-method)
 4. [Gauss method with column pivoting](#gauss-method-with-column-pivoting)
-    4.1. [Maximal pivoting by columns](#maximal-pivoting-by-columns)
+    1. [Maximal pivoting by columns](#maximal-pivoting-by-columns)
 5. [Gauss method with maximal pivoting (rows and columns)](#gauss-method-with-maximal-pivoting-rows-and-columns)
 
 
