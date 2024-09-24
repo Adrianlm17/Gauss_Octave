@@ -13,8 +13,8 @@ clc;
 
 
 % Matrix and results given
-A = [1,3,0;2,1,-1;2,4,-1];
-B = [4;0;2];
+A = [1,3,0,9;3,9,1,3;6,3,1,3;2,5,2,7];
+B = [2;-1;1;0];
 
 function results = simple_gauss_method(A, B)
   results = "";
@@ -23,17 +23,18 @@ function results = simple_gauss_method(A, B)
   % Sort Columns
   for i = 1:size(A, 2)
     for j = i+1:size(A, 2)
-      if A(1, j) > A(1, i)
-        temp = A(:, i);
-        A(:, i) = A(:, j);
-        A(:, j) = temp;
+      if A(i, j) > A(i, i)
+        temp = A(i, :);
+        A(i, :) = A(j, :);
+        A(j, :) = temp;
 
-        tempOrder = orderUnknown(i);
-        orderUnknown(i) = orderUnknown(j);
-        orderUnknown(j) = tempOrder;
+        temp = B(i, :);
+        B(i, :) = B(j, :);
+        B(j, :) = temp;
       endif
     endfor
   endfor
+
 
 
   % Upper Triangular
