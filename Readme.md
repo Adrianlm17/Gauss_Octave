@@ -63,8 +63,8 @@ For example:
 The second script is very similar to the first script (it must comply with the Gauss method), but we implement the rule of maximal pivoting by columns.
 
 ### Maximal pivoting by columns
-When we talk about maximal pivoting by columns, we refer to finding the largest number that can be found in a column.
-This allows us to modify the order of a matrix, making the Gauss method easier. It should be noted that when the order of the columns of a matrix is modified, it must be taken into account when giving the result, since the order of the unknowns will have been altered.
+When we talk about maximum pivoting by columns, we are referring to finding the largest number that can be found in a column.
+This allows us to modify the order of a matrix, making the Gauss method easier.
 
 For example:
 
