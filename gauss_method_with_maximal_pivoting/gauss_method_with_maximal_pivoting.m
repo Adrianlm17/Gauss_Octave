@@ -13,31 +13,33 @@ clc;
 
 
 % Matrix and results given
-A = [1,3,0;2,1,-1;2,4,-1];
-B = [4;0;2];
+A = [1,3,0,9;3,9,1,3;6,3,1,3;2,5,2,7];
+B = [2;-1;1;0];
 
 function results = simple_gauss_method(A, B)
   results = "";
   orderUnknown = 1:size(A, 2);
 
+
   % Sort Columns
   for i = 1:size(A, 2)
     for j = i+1:size(A, 2)
-      if A(1, j) > A(1, i)
-        temp = A(:, i);
-        A(:, i) = A(:, j);
-        A(:, j) = temp;
-        tempOrder = orderUnknown(i);
-        orderUnknown(i) = orderUnknown(j);
-        orderUnknown(j) = tempOrder;
+      if A(i, j) > A(i, i)
+        temp = A(i, :);
+        A(i, :) = A(j, :);
+        A(j, :) = temp;
+
+        temp = B(i, :);
+        B(i, :) = B(j, :);
+        B(j, :) = temp;
       endif
     endfor
   endfor
 
 
   % Sort Rows
-  for i = 1:size(A, 1)
-    for j = i+1:size(A, 1)
+  for i = 2:size(A, 1) % Columna
+    for j = i+1:size(A, 1) %Filas
       if A(i, 1) > A(j, 1)
         tempRow = A(i, :);
         A(i, :) = A(j, :);
