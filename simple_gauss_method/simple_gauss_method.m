@@ -12,14 +12,14 @@ clc;
 
 
 
-% Matrix and results given
-A = [1,3,0;0,1,4;2,3,-2;];
-B = [1;1;1];
+A = [1,3,0;2,1,-1;2,4,-1];
+B = [4;0;2];
+
+
 
 function results = simple_gauss_method(A, B)
   results = "";
 
-  % Upper Triangular
   for i = 2:size(A, 1)
     for j = 1:i-1
       if A(i,j) != 0
@@ -35,7 +35,7 @@ function results = simple_gauss_method(A, B)
   endfor
 
 
-  % Find values ​​of the unknowns
+
   for i = size(A,1):-1:1
     if i == size(A,1)
       result = B(i)/A(i,i);
@@ -66,3 +66,4 @@ endfunction
 results = simple_gauss_method(A, B);
 
 disp(results);
+

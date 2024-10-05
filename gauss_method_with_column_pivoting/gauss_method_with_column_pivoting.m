@@ -12,51 +12,46 @@ clc;
 
 
 
-% Matrix and results given
-A = [1,3,0,9;3,9,1,3;6,3,1,3;2,5,2,7];
-B = [2;-1;1;0];
+A = [1,3,0;2,1,-1;2,4,-1];
+b = [4;0;2];
 
-function results = simple_gauss_method(A, B)
+
+
+function [results, A, b]=gauss_method_with_column_pivoting(A,b)
   results = "";
-  orderUnknown = 1:size(A, 2);
-
-  % Sort Columns
-  for i = 1:size(A, 2)
-    for j = i+1:size(A, 2)
-      if A(i, j) > A(i, i)
-        temp = A(i, :);
-        A(i, :) = A(j, :);
-        A(j, :) = temp;
-
-        temp = B(i, :);
-        B(i, :) = B(j, :);
-        B(j, :) = temp;
+  [n,m]=size(b);
+  for j=1:n-1
+    mx = j;
+    for i = j +1 : n
+      if abs(A(i,j)) > abs(A(mx,j))
+        mx = i;
       endif
+    endfor
+    for k = j : n
+      aux = A(j,k);
+      A(j,k) = A(mx,k);
+      A(mx,k) = aux;
+    endfor
+
+    aux = b(j,1);
+    b(j,1) = b(mx,1);
+    b(mx,1) = aux;
+    for i=j+1:n
+      m=A(i,j)/A(j,j);
+      A(i,j)=0;
+
+      for k=j+1:n
+        A(i,k)=A(i,k)-m*A(j,k);
+      endfor
+      b(i,1)=b(i,1)-m*b(j,1);
     endfor
   endfor
 
 
 
-  % Upper Triangular
-  for i = 2:size(A, 1)
-    for j = 1:i-1
-      if A(i,j) != 0
-        x = A(i,j);
-        y = A(j,j);
-
-        multiplier = x / y;
-
-        A(i, :) = A(i, :) - multiplier * A(j, :);
-        B(i) = B(i) - multiplier * B(j);
-      endif
-    endfor
-  endfor
-
-
-  % Find values ​​of the unknowns
   for i = size(A,1):-1:1
     if i == size(A,1)
-      result = B(i)/A(i,i);
+      result = b(i)/A(i,i);
       for j = i:-1:1
         A(j,i);
         A(j,i) = A(j,i)*result;
@@ -68,20 +63,25 @@ function results = simple_gauss_method(A, B)
         operation = operation + (-1*A(i,j));
       endfor
 
-      result = ((B(i)+operation)/A(i,i));
+      result = ((b(i)+operation)/A(i,i));
       for j = i:-1:1
         A(j,i);
         A(j,i) = A(j,i)*result;
       endfor
     endif
 
-     position = orderUnknown(i);
-    results = [results, sprintf("X%d = %f\n", position, result)];
+    results = [results, sprintf("X%d = %f\n", i, result)];
   endfor
+
 endfunction
 
 
+[results, A, b] = gauss_method_with_column_pivoting(A,b);
 
-results = simple_gauss_method(A, B);
-
+disp('Matrix A after elimination:');
+disp(A);
+disp('Vector B after removal:');
+disp(b);
+disp('Result of the unknowns:');
 disp(results);
+
