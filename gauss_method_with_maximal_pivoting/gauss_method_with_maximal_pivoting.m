@@ -12,88 +12,72 @@ clc;
 
 
 
-% Matrix and results given
-A = [1,3,0,9;3,9,1,3;6,3,1,3;2,5,2,7];
-B = [2;-1;1;0];
+y = 0.3000;
+z = 27;
+s = 2307;
+t = 12983;
+x = 0.0001;
 
-function results = simple_gauss_method(A, B)
-  results = "";
-  orderUnknown = 1:size(A, 2);
+A = [
+    x^4, x^3, x^2, x^1, 1;
+    y^4, y^3, y^2, y^1, 1;
+    z^4, z^3, z^2, z^1, 1;
+    s^4, s^3, s^2, s^1, 1;
+    t^4, t^3, t^2, t^1, 1
+];
+
+A = (A');
+b = [1; 2; 3; 4; 5];
 
 
-  % Sort Columns
-  for i = 1:size(A, 2)
-    for j = i+1:size(A, 2)
-      if A(i, j) > A(i, i)
-        temp = A(i, :);
-        A(i, :) = A(j, :);
-        A(j, :) = temp;
 
-        temp = B(i, :);
-        B(i, :) = B(j, :);
-        B(j, :) = temp;
-      endif
+function [results, A, b] = gauss_method_with_maximal_pivoting(A, b)
+    results = "";
+    [n, m] = size(A);
+
+    for j = 1:n-1
+        mx = j;
+        for i = j + 1:n
+            if abs(A(i, j)) > abs(A(mx, j))
+                mx = i;
+            endif
+        endfor
+
+        if mx != j
+            A([j, mx], :) = A([mx, j], :);
+            b([j, mx]) = b([mx, j]);
+        endif
+
+        for i = j + 1:n
+            m = A(i, j) / A(j, j);
+            A(i, j) = 0;
+            for k = j + 1:n
+                A(i, k) = A(i, k) - m * A(j, k);
+            endfor
+            b(i) = b(i) - m * b(j);
+        endfor
     endfor
-  endfor
 
-
-  % Sort Rows
-  for i = 2:size(A, 1) % Columna
-    for j = i+1:size(A, 1) %Filas
-      if A(i, 1) > A(j, 1)
-        tempRow = A(i, :);
-        A(i, :) = A(j, :);
-        A(j, :) = tempRow;
-      endif
+    x = zeros(n, 1);
+    for i = n:-1:1
+        x(i) = (b(i) - A(i, i+1:n) * x(i+1:n)) / A(i, i);
     endfor
-  endfor
 
-
-  % Upper Triangular
-  for i = 2:size(A, 1)
-    for j = 1:i-1
-      if A(i,j) != 0
-        x = A(i,j);
-        y = A(j,j);
-
-        multiplier = x / y;
-
-        A(i, :) = A(i, :) - multiplier * A(j, :);
-        B(i) = B(i) - multiplier * B(j);
-      endif
+    for i = 1:length(x)
+        results = [results, sprintf("λ%d = %.25f\n", i, x(i))];
     endfor
-  endfor
-
-
-  % Find values ​​of the unknowns
-  for i = size(A,1):-1:1
-    if i == size(A,1)
-      result = B(i)/A(i,i);
-      for j = i:-1:1
-        A(j,i);
-        A(j,i) = A(j,i)*result;
-      endfor
-
-    else
-      operation = 0;
-      for j = i+1:size(A,1)
-        operation = operation + (-1*A(i,j));
-      endfor
-
-      result = ((B(i)+operation)/A(i,i));
-      for j = i:-1:1
-        A(j,i);
-        A(j,i) = A(j,i)*result;
-      endfor
-    endif
-
-     position = orderUnknown(i);
-    results = [results, sprintf("X%d = %f\n", position, result)];
-  endfor
 endfunction
 
 
 
-results = simple_gauss_method(A, B);
+[results, A, b] = gauss_method_with_maximal_pivoting(A, b);
 
+
+
+disp('Matrix A after elimination:');
+disp(A);
+disp('Vector B after removal:');
+disp(b);
+disp('Result of the unknowns:');
 disp(results);
+

@@ -12,8 +12,16 @@ clc;
 
 
 
-A = [1,3,0;2,1,-1;2,4,-1];
-B = [4;0;2];
+y = 0.3000;
+z = 27;
+s = 2307;
+t = 12983;
+x = 0.0001;
+
+A=[x^4, x^3, x^2, x^1, 1; y^4, y^3, y^2, y^1, 1; z^4, z^3, z^2, z^1, 1; s^4, s^3, s^2, s^1, 1; t^4, t^3, t^2, t^1, 1];
+
+A = (A');
+B = [1;2;3;4;5];
 
 
 
@@ -57,7 +65,7 @@ function results = simple_gauss_method(A, B)
       endfor
     endif
 
-    results = [results, sprintf("X%d = %f\n", i, result)];
+    results = [results, sprintf("X%d = %.15e\n", i, result)];
   endfor
 endfunction
 
@@ -65,5 +73,10 @@ endfunction
 
 results = simple_gauss_method(A, B);
 
+disp('Matrix A after elimination:');
+disp(A);
+disp('Vector B after removal:');
+disp(b);
+disp('Result of the unknowns:');
 disp(results);
 
